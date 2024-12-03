@@ -1,6 +1,8 @@
 import os
-import pytest
 from unittest.mock import patch, MagicMock
+
+import pytest
+
 from config.settings import DevSettings, ProdSettings, SettingsFactory, BaseSettings
 
 

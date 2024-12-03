@@ -17,7 +17,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 def get_current_user(token: str = Depends(oauth2_scheme)) -> UserBase:
     """
-    Extract and validate the user from the token.
+    Extract and validate the user from the token
     """
     user = fake_users_db.get(token)
     if not user or not user.is_active:
@@ -27,7 +27,7 @@ def get_current_user(token: str = Depends(oauth2_scheme)) -> UserBase:
 
 def require_role(role: str):
     """
-    Ensure the user has a specific role.
+    Ensure the user has a specific role
     """
 
     def role_checker(user: UserBase = Depends(get_current_user)):

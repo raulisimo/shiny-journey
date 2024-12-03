@@ -3,9 +3,9 @@ from typing import Optional, List
 
 from fastapi import APIRouter, HTTPException, Depends, Query
 
-from config.authorization import require_role
 from config.constants import MOVIE_NOT_FOUND_MESSAGE
-from config.dependencies import get_movie_service
+from dependencies.authorization import require_role
+from dependencies.movie_service import get_movie_service
 from schemas.movies import MovieOut, MovieCreate, MovieUpdate, MovieListResponse
 from schemas.users import UserBase
 from services.movie import MovieService

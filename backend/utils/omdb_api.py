@@ -1,12 +1,13 @@
 import logging
 
-from config.settings import settings
 import httpx
+
+from config.settings import settings
 
 
 async def fetch_movie_from_omdb(title: str):
     """
-    Fetch movie details from the OMDB API by title.
+    Fetch movie details from the OMDB API by title
     """
     try:
         url = f"http://www.omdbapi.com/?apikey={settings.OMDB_API_KEY}&t={title}"
@@ -21,4 +22,3 @@ async def fetch_movie_from_omdb(title: str):
     except Exception as e:
         logging.error(f"Failed to fetch movie from OMDB: {e}")
         return None
-

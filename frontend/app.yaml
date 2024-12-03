@@ -1,0 +1,24 @@
+service: frontend
+runtime: nodejs20  # node version
+
+env_variables:
+  VITE_API_BASE_URL: "https://pro-groove-443318-s8.ew.r.appspot.com/api"  # API base URL in production
+
+handlers:
+  - url: /assets  # Serve static assets like CSS and JS
+    static_dir: dist/assets
+
+  - url: /images  # Serve images from /images path
+    static_dir: public/images  # Serve images from the public/images folder
+
+  - url: /  # Serve the main index.html file
+    static_files: dist/index.html
+    upload: dist/index.html
+  
+  - url: /favicon.ico  # Serve favicon from /favicon.ico path
+    static_files: public/favicon.ico  # Specify the favicon file in the public folder
+    upload: public/favicon.ico
+
+  - url: /.*  # Catch all other routes and serve index.html (for Vue Router SPA)
+    static_files: dist/index.html
+    upload: dist/index.html

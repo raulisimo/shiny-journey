@@ -1,17 +1,8 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
+from dependencies.database import get_db
 from services.movie import MovieService
-
-
-# Dependency for database session
-def get_db():
-    from config.database import SessionLocal
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 
 # Dependency to provide MovieService

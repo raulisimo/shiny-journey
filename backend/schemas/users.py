@@ -1,6 +1,6 @@
 from typing import List
 
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, Field
 
 
 class UserBase(BaseModel):
@@ -17,7 +17,7 @@ class UserCreate(UserBase):
 
 class UserOut(UserBase):
     """
-    Schema for returning user information (e.g., in API responses).
-    Excludes sensitive information like passwords.
+    Schema for returning user information in API responses
+    Excludes sensitive information like passwords
     """
     pass

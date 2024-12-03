@@ -4,7 +4,6 @@ import random
 from typing import List, Optional, Dict
 
 import httpx
-from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import DeclarativeMeta, declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -14,7 +13,7 @@ from schemas.movies import MovieCreate
 from utils.transformers import transform_movie_data
 
 # ORM setup
-engine = create_engine(settings.DATABASE_URL, connect_args={"sslmode": "require"} if not settings.DEBUG else {})
+engine = settings.get_db_connection()
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base: DeclarativeMeta = declarative_base()
 

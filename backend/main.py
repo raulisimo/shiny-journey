@@ -1,4 +1,5 @@
 import logging
+import os
 from contextlib import asynccontextmanager
 
 import uvicorn
@@ -7,71 +8,78 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from config.constants import SEED_MOVIE_COUNT
-from config.database import engine, SessionLocal, get_movie_seeder
+from config.database import SessionLocal, get_movie_seeder
 from config.settings import settings
 from models import metadata
 from repositories.movie import MovieRepository
 from routers import api_router
 
 
-# Check the database on startup and seed if empty
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Create a database session
-    db: Session = SessionLocal()
-
+    db: Session = SessionLocal()  # Create the DB session
     try:
-        # Initialize the repository with the session
-        movie_repo = MovieRepository(db)
+        logging.info("Creating database and models")
+        engine = settings.get_db_connection()
+        try:
+            metadata.create_all(bind=engine)
+            logging.info("Tables created successfully.")
+        except Exception as e:
+            logging.error(f"Failed to create tables: {e}")
 
-        # Check the database and seed if empty
-        number_movies = movie_repo.count_movies()
-        if number_movies == 0:
+        # Movie repository and seeding logic
+        movie_repo = MovieRepository(db)
+        if movie_repo.count_movies() == 0:
             logging.info("Database is not ready, seeding...")
             try:
-                logging.info("Seeding database...")
                 seed_movies = await get_movie_seeder(SEED_MOVIE_COUNT)
                 for movie_data in seed_movies:
                     movie_repo.create(movie_data)
+                logging.info("Database seeded successfully.")
             except Exception as e:
                 logging.error(f"Error while seeding the database: {e}")
-            else:
-                logging.info("Database seeded successfully.")
+
         yield
+
+    except Exception as e:
+        logging.error(f"Error while creating the database: {e}")
     finally:
         db.close()
 
 
 app = FastAPI(title=settings.APP_TITLE, debug=settings.DEBUG, lifespan=lifespan)
-metadata.create_all(engine)
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+
+logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
 app.include_router(api_router, prefix="/api")
 
-# Add CORS middleware to allow requests from frontend
+# CORS settings
 origins = [
-    "http://localhost:5173",  # Add your frontend URL here
-    "https://yourfrontenddomain.com",  # Or the deployed frontend URL if applicable
+    "http://localhost:5173",
+    "https://frontend-dot-pro-groove-443318-s8.ew.r.appspot.com",
 ]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # Specify the allowed origins
-    allow_credentials=True,
-    allow_methods=["*"],  # Allow all HTTP methods
-    allow_headers=["*"],  # Allow all headers
+    allow_origins=origins,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
+
+
+@app.get("/")
+async def app_settings():
+    return {
+        "message": "Welcome to the Brite movies backend!",
+        "docs": "https://pro-groove-443318-s8.ew.r.appspot.com/docs",
+    }
 
 
 @app.get("/settings")
 async def app_settings():
-    omdb_api_key = settings.OMDB_API_KEY
-    database_url = settings.DATABASE_URL
-    jwt_secret = settings.JWT_SECRET
-    debug = settings.DEBUG
-
     return {
-        "message": f'OMDB API Key: {omdb_api_key}, Database URL: {database_url}, JWT Secret: {jwt_secret}, debug: {debug}'}
+        "DEBUG": settings.DEBUG,
+        "ENV": os.getenv("ENV")
+    }
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8080)

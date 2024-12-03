@@ -12,7 +12,12 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url))  // Alias for simpler imports
     },
+  },
+  define: {
+    'process.env': {
+      VITE_API_BASE_URL: process.env.VITE_API_BASE_URL,  // Use environment variable for API base URL
+    }
   },
 })
