@@ -7,4 +7,3 @@ api_router = APIRouter()
 
 # Include route modules
 api_router.include_router(movies_router, prefix="/movies", tags=["Movies"])
-# api_router.include_router(users_router, prefix="/users", tags=["Users"])

@@ -54,7 +54,7 @@ app.include_router(api_router, prefix="/api")
 
 # CORS settings
 origins = [
-    "http://localhost:5173",
+    "http://localhost:3000",
     "https://frontend-dot-pro-groove-443318-s8.ew.r.appspot.com",
 ]
 app.add_middleware(
@@ -82,4 +82,4 @@ async def app_settings():
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8080)
+    uvicorn.run(app, host="localhost", port=8000)

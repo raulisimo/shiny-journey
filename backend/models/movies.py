@@ -53,7 +53,7 @@ class Movie(ModelBase):
     @classmethod
     def validate_title(cls, title: str) -> bool:
         """
-        Validate the title length and ensure it adheres to business rules.
+        Validate the title length and ensure it adheres to business rules
         """
         if len(title) > 255:
             raise ValueError("Title length cannot exceed 255 characters.")
@@ -62,7 +62,7 @@ class Movie(ModelBase):
     @classmethod
     def validate_imdb_id(cls, imdb_id: str) -> bool:
         """
-        Validate IMDb ID format (e.g., tt1234567).
+        Validate IMDb ID format (e.g., tt1234567)
         """
         if not imdb_id.startswith("tt") or len(imdb_id) != 10:
             raise ValueError("IMDb ID must be in the format 'tt1234567'.")
