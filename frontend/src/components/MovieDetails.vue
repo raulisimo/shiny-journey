@@ -219,7 +219,7 @@ export default {
 
 				if (response.ok) {
 					alert('Movie deleted successfully!')
-					router.push('/movies')
+					router.push('/')
 				} else {
 					const errorData = await response.json()
 					alert(`Failed to delete movie: ${errorData.detail}`)

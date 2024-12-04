@@ -1,4 +1,14 @@
+# Preview the app
+
+You can access the app at the following links:
+
+-   **Backend**: [https://pro-groove-443318-s8.ew.r.appspot.com](https://pro-groove-443318-s8.ew.r.appspot.com)
+-   **Frontend**: [https://frontend-dot-pro-groove-443318-s8.ew.r.appspot.com](https://frontend-dot-pro-groove-443318-s8.ew.r.appspot.com)
+
+# API Endpoints
+
 # Installation
+
 ## Clone the repository
 
 ```
@@ -7,6 +17,7 @@ cd shiny-journey
 ```
 
 Inside the project folder there are two folders:
+
 1. **backend**: with the Fastapi code.
 2. **frontend**: with the vue 3 code.
 
@@ -21,7 +32,7 @@ It’s recommended to use a virtual environment for your Python project.
 ```
 python3 -m venv venv
 source venv/bin/activate  # On Windows, use venv\Scripts\activate
-````
+```
 
 ## Install Dependencies
 
@@ -40,6 +51,7 @@ cd frontend
 ```
 
 2.Install the Vue dependencies:
+
 ```
 npm install
 ```
@@ -52,14 +64,17 @@ Local Development (.env file)
 In your project root, create a .env file with the following content:
 
 ### General settings
+
     APP_TITLE="BRITE MOVIES"
     OMDB_API_KEY="your_omdb_api_key"
     DEBUG="true"  # Set to false for production
 
 # Database settings (for development)
+
     DATABASE_URL="sqlite:///./test.db"  # For SQLite in development
 
 # Google Cloud settings (for production)
+
     GCP_PROJECT_ID="your_gcp_project_id"
     CLOUD_SQL_CONNECTION_NAME="your_cloud_sql_connection_name"
     DB_USER="root"  # MySQL user
@@ -95,11 +110,10 @@ To run the app locally in development mode:
 
     uvicorn app.main:app --reload  # This starts the FastAPI server with hot reloading
 
-
 ## Production
 
 For production, ensure that all secrets are properly stored in Google Cloud Secret Manager, or in the app.yaml
-    
+
     entrypoint: uvicorn main:app --host 0.0.0.0 --port 8080
 
 ## Frontend Integration
@@ -120,31 +134,39 @@ The Vue app will be available at http://localhost:3000.
 Note: The frontend sends HTTP requests to the backend to fetch movie details and perform updates or deletions. Ensure CORS is configured properly in FastAPI to allow communication between the frontend and backend.
 
 # API Endpoints
+
+You can view the API documentation at:
+
+-   **Local**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+-   **Production**: [https://pro-groove-443318-s8.ew.r.appspot.com/docs](https://pro-groove-443318-s8.ew.r.appspot.com/docs)
+
+Changes:
+
 1. Get Movie Details
 
-- Endpoint: GET api/movies/{movie_id}
-- Description: Fetch details of a movie by ID.
-- Authorization: None.
-- Example: GET http://localhost:8000/api/movies/1
+-   Endpoint: GET api/movies/{movie_id}
+-   Description: Fetch details of a movie by ID.
+-   Authorization: None.
+-   Example: GET http://localhost:8000/api/movies/1
 
 2. Update Movie
 
-- Endpoint: PATCH api/movies/{movie_id}
-- Description: Update an existing movie's details.
-- Example: PATCH http://localhost:8000/api/movies/1
-- Content-Type: application/json
+-   Endpoint: PATCH api/movies/{movie_id}
+-   Description: Update an existing movie's details.
+-   Example: PATCH http://localhost:8000/api/movies/1
+-   Content-Type: application/json
 
     {
-      "title": "New Title",
-      "director": "New Director"
+    "title": "New Title",
+    "director": "New Director"
     }
 
 3. Delete Movie
 
-- Endpoint: DELETE api/movies/{movie_id} 
-- Description: Delete a movie by ID.
-- Authorization: Requires an authenticated admin user.
-- Example: DELETE http://localhost:8000/api/movies/1
+-   Endpoint: DELETE api/movies/{movie_id}
+-   Description: Delete a movie by ID.
+-   Authorization: Requires an authenticated admin user.
+-   Example: DELETE http://localhost:8000/api/movies/1
 
 4. Authentication
 
