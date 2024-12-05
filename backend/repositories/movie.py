@@ -13,6 +13,16 @@ class MovieRepository(BaseRepository[Movie, MovieCreate]):
     def __init__(self, db_session: Session):
         super().__init__(db_session, Movie)
 
+    def get_all_ordered_by_title(self, skip: int = 0, limit: int = 10) -> List[Type[Movie]]:
+        """Retrieve all movies ordered by title with optional pagination."""
+        return (
+            self.db_session.query(Movie)
+            .order_by(Movie.title)
+            .offset(skip)
+            .limit(limit)
+            .all()
+        )
+
     def update(self, movie_id: int, movie_data: MovieUpdate) -> Movie:
         """Update a movie."""
         movie = self.get_by_id(movie_id)

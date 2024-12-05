@@ -75,10 +75,10 @@ class MovieService:
     def get_all_movies(self, page: int = 1, limit: int = 10) -> List[Movie]:
         return self.movie_repository.get_all(page, limit)
 
-    def get_movies_with_pagination(self, skip: int, limit: int) -> Tuple[List[Movie], int]:
+    def get_movies_with_pagination(self, skip: int, limit: int) -> Tuple[List[Type[Movie]], int]:
         """Get movies with pagination."""
         # Get the paginated results from the repository
-        movies = self.movie_repository.get_all(skip, limit)
+        movies = self.movie_repository.get_all_ordered_by_title(skip, limit)
         total_movies = self.movie_repository.count_movies()
         return movies, total_movies
 
